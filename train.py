@@ -49,7 +49,7 @@ parser.add_argument('--input_size', default='320', choices=['320', '512'],
                     type=str, help='RefineDet320 or RefineDet512')
 parser.add_argument('--dataset_root', default=VOC_ROOT,
                     help='Dataset root directory path')
-parser.add_argument('--basenet', default='weights/vgg16_reducedfc.pth',
+parser.add_argument('--basenet', default='/content/cmn/weights/vgg16_reducedfc.pth',
                     help='Pretrained base model')
 parser.add_argument('--batch_size', default=32, type=int,
                     help='Batch size for training')

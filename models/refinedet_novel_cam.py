@@ -169,12 +169,12 @@ class RefineDet_novel_cam(nn.Module):
 
         if self.phase == "test":
             #print(loc, conf)
-            output = self.detect(
+            output = self.detect.forward(
                 arm_loc.view(arm_loc.size(0), -1, 4),           # arm loc preds
-                self.softmax(arm_conf.view(arm_conf.size(0), -1,
+                self.softmax.forward(arm_conf.view(arm_conf.size(0), -1,
                              2)),                               # arm conf preds
                 odm_loc.view(odm_loc.size(0), -1, 4),           # odm loc preds
-                self.softmax(odm_conf.view(odm_conf.size(0), -1,
+                self.softmax.forward(odm_conf.view(odm_conf.size(0), -1,
                              self.num_classes)),                # odm conf preds
                 self.priors.type(type(x.data))                  # default boxes
             )

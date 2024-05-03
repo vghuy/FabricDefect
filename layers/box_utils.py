@@ -528,10 +528,10 @@ def diounms(boxes, scores, overlap=0.5, top_k=200, beta1=1.0):
             break
         idx = idx[:-1]  # remove kept element from view
         # load bboxes of next highest vals
-        torch.index_select(x1, 0, idx, out=xx1)
-        torch.index_select(y1, 0, idx, out=yy1)
-        torch.index_select(x2, 0, idx, out=xx2)
-        torch.index_select(y2, 0, idx, out=yy2)
+        # torch.index_select(x1, 0, idx, out=xx1)
+        # torch.index_select(y1, 0, idx, out=yy1)
+        # torch.index_select(x2, 0, idx, out=xx2)
+        # torch.index_select(y2, 0, idx, out=yy2)
 
         xx1 = torch.index_select(x1, 0, idx)
         yy1 = torch.index_select(y1, 0, idx)
@@ -553,8 +553,8 @@ def diounms(boxes, scores, overlap=0.5, top_k=200, beta1=1.0):
         cy2 = torch.clamp(yy2, min=y2[i])
         c = (cx2 - cx1) ** 2 + (cy2 - cy1) ** 2
         u= d / c
-        w.resize_as_(xx2)
-        h.resize_as_(yy2)
+        # w.resize_as_(xx2)
+        # h.resize_as_(yy2)
         w = inx2 - inx1
         h = iny2 - iny1
         w.detach().resize_as_(xx2)

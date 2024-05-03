@@ -424,7 +424,7 @@ def test_net(save_folder, net, cuda, dataset, transform, top_k,
     output_dir = get_output_dir('ssd300_120000', set_type)
     det_file = os.path.join(output_dir, 'detections.pkl')
 
-    time1 = time.clock()
+    time1 = time.perf_counter()
     for i in range(num_images):
         im, gt, h, w = dataset.pull_item(i)
 
@@ -456,7 +456,7 @@ def test_net(save_folder, net, cuda, dataset, transform, top_k,
 
         print('im_detect: {:d}/{:d} {:.3f}s'.format(i + 1,
                                                     num_images, detect_time))
-    time2=time.clock()
+    time2=time.perf_counter()
     print("detecting %d images needs %.4fs"%(num_images,(time2-time1)))
     with open(det_file, 'wb') as f:
         pickle.dump(all_boxes, f, pickle.HIGHEST_PROTOCOL)

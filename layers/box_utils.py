@@ -557,6 +557,8 @@ def diounms(boxes, scores, overlap=0.5, top_k=200, beta1=1.0):
         h.resize_as_(yy2)
         w = inx2 - inx1
         h = iny2 - iny1
+        w.detach().resize_as_(xx2)
+        h.detach().resize_as_(yy2)
         # check sizes of xx1 and xx2.. after each iteration
         w = torch.clamp(w, min=0.0)
         h = torch.clamp(h, min=0.0)

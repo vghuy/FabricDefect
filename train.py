@@ -270,7 +270,7 @@ def train():
     # lr_scheduler = CosineWarmupLr(optimizer, epoch_size, ,base_lr=args.lr,warmup_epochs=10)
     scheduler = None
     if args.cosineAnnealLR:
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, 120000, eta_min=0, last_epoch=-1)
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, 6000, eta_min=0, last_epoch=-1)
 
 
     pltx=[]
@@ -360,7 +360,7 @@ def train():
         #     torch.save(refinedet_net.state_dict(), args.save_folder
         #              + '/RefineDet{}_{}_TILDA_sam_best_.pth'.format(args.input_size, args.dataset))
     torch.save(refinedet_net.state_dict(), args.save_folder
-            + '/RefineDet{}_voc0712_final120000.pth'.format(args.input_size))
+            + '/RefineDet{}_voc0712_final6000.pth'.format(args.input_size))
     plt.plot(pltx,plty,label='Total loss')
     plt.plot(pltx,pltz,label='CA-ARM loss')
     plt.plot(pltx,pltm,label='ODM loss')

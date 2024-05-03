@@ -15,8 +15,8 @@ MEANS = (104, 117, 123)
 voc_refinedet = {
     '320': {
         'num_classes': 10, # defect class +1 DAGM: 11 Hong Kong dataset: 7 TILDA :5 VOC: 21
-        'lr_steps': (80000, 100000, 120000),
-        'max_iter': 120000, # total iteration
+        'lr_steps': (2000, 4000, 6000),
+        'max_iter': 6000, # total iteration
         'feature_maps': [40, 20, 10, 5],
         'min_dim': 320,
         'steps': [8, 16, 32, 64],
@@ -29,8 +29,8 @@ voc_refinedet = {
     },
     '512': {
         'num_classes': 10,
-        'lr_steps': (80000, 100000, 120000),
-        'max_iter': 120000,
+        'lr_steps': (2000, 4000, 6000),
+        'max_iter': 6000,
         'feature_maps': [64, 32, 16, 8],
         'min_dim': 512,
         'steps': [8, 16, 32, 64],

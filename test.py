@@ -489,7 +489,7 @@ if __name__ == '__main__':
     print(torch.cuda.current_device())
     num_classes = len(labelmap) + 1                # +1 for background
     net = build_refinedet_novel_cam('test', int(args.input_size), num_classes)            # initialize SSD
-    net.load_state_dict(torch.load(args.trained_model))
+    net.load_state_dict(torch.load(args.trained_model), strict=False)
     net.eval()
     print('Finished loading model!')
     # load data

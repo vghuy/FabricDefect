@@ -460,6 +460,18 @@ def nms(boxes, scores, overlap=0.5, top_k=200):
             break
         idx = idx[:-1]  # remove kept element from view
         # load bboxes of next highest vals
+        idx = torch.autograd.Variable(idx, requires_grad=False)
+        idx = idx.data
+        x1 = torch.autograd.Variable(x1, requires_grad=False)
+        x1 = x1.data
+        y1 = torch.autograd.Variable(y1, requires_grad=False)
+        y1 = x1.data
+        x1 = torch.autograd.Variable(y1, requires_grad=False)
+        x1 = x1.data
+        x2 = torch.autograd.Variable(x2, requires_grad=False)
+        x2 = x2.data
+        y2 = torch.autograd.Variable(y2, requires_grad=False)
+        y2 = y2.data                                
         torch.index_select(x1, 0, idx, out=xx1)
         torch.index_select(y1, 0, idx, out=yy1)
         torch.index_select(x2, 0, idx, out=xx2)
@@ -478,6 +490,11 @@ def nms(boxes, scores, overlap=0.5, top_k=200):
         h = torch.clamp(h, min=0.0)
         inter = w*h
         # IoU = i / (area(a) + area(b) - i)
+        area = torch.autograd.Variable(area, requires_grad=False)
+        area = area.data
+        idx = torch.autograd.Variable(idx, requires_grad=False)
+        idx = idx.data
+
         rem_areas = torch.index_select(area, 0, idx)  # load remaining areas)
         union = (rem_areas - inter) + area[i]
         IoU = inter/union  # store result in iou
@@ -528,15 +545,22 @@ def diounms(boxes, scores, overlap=0.5, top_k=200, beta1=1.0):
             break
         idx = idx[:-1]  # remove kept element from view
         # load bboxes of next highest vals
-        # torch.index_select(x1, 0, idx, out=xx1)
-        # torch.index_select(y1, 0, idx, out=yy1)
-        # torch.index_select(x2, 0, idx, out=xx2)
-        # torch.index_select(y2, 0, idx, out=yy2)
-
-        xx1 = torch.index_select(x1, 0, idx)
-        yy1 = torch.index_select(y1, 0, idx)
-        xx2 = torch.index_select(x2, 0, idx)
-        yy2 = torch.index_select(y2, 0, idx)
+        idx = torch.autograd.Variable(idx, requires_grad=False)
+        idx = idx.data
+        x1 = torch.autograd.Variable(x1, requires_grad=False)
+        x1 = x1.data
+        y1 = torch.autograd.Variable(y1, requires_grad=False)
+        y1 = x1.data
+        x1 = torch.autograd.Variable(y1, requires_grad=False)
+        x1 = x1.data
+        x2 = torch.autograd.Variable(x2, requires_grad=False)
+        x2 = x2.data
+        y2 = torch.autograd.Variable(y2, requires_grad=False)
+        y2 = y2.data                                
+        torch.index_select(x1, 0, idx, out=xx1)
+        torch.index_select(y1, 0, idx, out=yy1)
+        torch.index_select(x2, 0, idx, out=xx2)
+        torch.index_select(y2, 0, idx, out=yy2)
         # store element-wise max with next highest score
         inx1 = torch.clamp(xx1, min=x1[i])
         iny1 = torch.clamp(yy1, min=y1[i])
@@ -553,17 +577,20 @@ def diounms(boxes, scores, overlap=0.5, top_k=200, beta1=1.0):
         cy2 = torch.clamp(yy2, min=y2[i])
         c = (cx2 - cx1) ** 2 + (cy2 - cy1) ** 2
         u= d / c
-        # w.resize_as_(xx2)
-        # h.resize_as_(yy2)
+        w.resize_as_(xx2)
+        h.resize_as_(yy2)
         w = inx2 - inx1
         h = iny2 - iny1
-        w.detach().resize_as_(xx2)
-        h.detach().resize_as_(yy2)
         # check sizes of xx1 and xx2.. after each iteration
         w = torch.clamp(w, min=0.0)
         h = torch.clamp(h, min=0.0)
         inter = w*h
         # IoU = i / (area(a) + area(b) - i)
+
+        area = torch.autograd.Variable(area, requires_grad=False)
+        area = area.data
+        idx = torch.autograd.Variable(idx, requires_grad=False)
+        idx = idx.data
         rem_areas = torch.index_select(area, 0, idx)  # load remaining areas)
         union = (rem_areas - inter) + area[i]
         IoU = inter/union - u ** beta1 # store result in diou

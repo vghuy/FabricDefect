@@ -177,7 +177,7 @@ def write_voc_results_file(all_boxes, dataset):
                                    dets[k, 2] + 1, dets[k, 3] + 1))
 
 
-def do_python_eval(output_dir='output', use_07=False):
+def do_python_eval(output_dir='output', use_07=True):
     cachedir = os.path.join(devkit_path, 'annotations_cache')
     aps = []
     # The PASCAL VOC metric changed in 2010
@@ -191,7 +191,7 @@ def do_python_eval(output_dir='output', use_07=False):
         filename = get_voc_results_file_template(set_type, cls)
         rec, prec, ap = voc_eval(
            filename, annopath, imgsetpath.format(set_type), cls, cachedir,
-           ovthresh=0.5, use_07_metric=False)
+           ovthresh=0.5, use_07_metric=use_07_metric)
         aps += [ap]
         rec_l.append(rec[-1])
         pre_l.append(prec[-1])

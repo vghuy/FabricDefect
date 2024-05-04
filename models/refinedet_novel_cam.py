@@ -171,10 +171,10 @@ class RefineDet_novel_cam(nn.Module):
             #print(loc, conf)
             output = self.detect.forward(
                 arm_loc.view(arm_loc.size(0), -1, 4),           # arm loc preds
-                self.softmax.forward(arm_conf.view(arm_conf.size(0), -1,
+                self.softmax(arm_conf.view(arm_conf.size(0), -1,
                              2)),                               # arm conf preds
                 odm_loc.view(odm_loc.size(0), -1, 4),           # odm loc preds
-                self.softmax.forward(odm_conf.view(odm_conf.size(0), -1,
+                self.softmax(odm_conf.view(odm_conf.size(0), -1,
                              self.num_classes)),                # odm conf preds
                 self.priors.type(type(x.data))                  # default boxes
             )
@@ -327,7 +327,7 @@ tcb_add = {
 }
 
 
-def build_refinedet_novel_cam(phase, size=320, num_classes=21):
+def build_refinedet_novel_cam(phase, size=320, num_classes=10):
     if phase != "test" and phase != "train":
         print("ERROR: Phase: " + phase + " not recognized")
         return

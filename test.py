@@ -51,7 +51,7 @@ def str2bool(v):
 parser = argparse.ArgumentParser(
     description='Single Shot MultiBox Detector Evaluation')
 parser.add_argument('--trained_model',
-                    default='weights/RefineDet320_voc0712_final120000.pth', type=str,
+                    default='/content/drive/MyDrive/KLTN/RefineDet320_voc0712_final6000.pth', type=str,
                     help='Trained state_dict file path to open')
 parser.add_argument('--save_folder', default='eval/', type=str,
                     help='File path to save results')
@@ -89,7 +89,7 @@ imgsetpath = os.path.join(args.voc_root, 'VOC2007', 'ImageSets',
                           'Main', '{:s}.txt')
 YEAR = '2007'
 devkit_path = args.voc_root + 'VOC' + YEAR
-dataset_mean = (104, 117, 123)
+dataset_mean = (124, )
 set_type = 'test'
 
 
@@ -167,7 +167,7 @@ def write_voc_results_file(all_boxes, dataset):
         with open(filename, 'wt') as f:
             for im_ind, index in enumerate(dataset.ids):
                 dets = all_boxes[cls_ind+1][im_ind]
-                if dets == []:
+                if len(dets) == 0:
                     continue
                 # the VOCdevkit expects 1-based indices
                 for k in range(dets.shape[0]):
@@ -177,7 +177,7 @@ def write_voc_results_file(all_boxes, dataset):
                                    dets[k, 2] + 1, dets[k, 3] + 1))
 
 
-def do_python_eval(output_dir='output', use_07=True):
+def do_python_eval(output_dir='output', use_07=False):
     cachedir = os.path.join(devkit_path, 'annotations_cache')
     aps = []
     # The PASCAL VOC metric changed in 2010
@@ -191,7 +191,7 @@ def do_python_eval(output_dir='output', use_07=True):
         filename = get_voc_results_file_template(set_type, cls)
         rec, prec, ap = voc_eval(
            filename, annopath, imgsetpath.format(set_type), cls, cachedir,
-           ovthresh=0.5, use_07_metric=use_07_metric)
+           ovthresh=0.5, use_07_metric=False)
         aps += [ap]
         rec_l.append(rec[-1])
         pre_l.append(prec[-1])
@@ -326,7 +326,7 @@ cachedir: Directory for caching the annotations
     for imagename in imagenames:
         R = [obj for obj in recs[imagename] if obj['name'] == classname]
         bbox = np.array([x['bbox'] for x in R])
-        difficult = np.array([x['difficult'] for x in R]).astype(np.bool)
+        difficult = np.array([x['difficult'] for x in R]).astype(np.bool_)
         det = [False] * len(R)
         npos = npos + sum(~difficult)
         class_recs[imagename] = {'bbox': bbox,
@@ -411,7 +411,7 @@ cachedir: Directory for caching the annotations
 
 
 def test_net(save_folder, net, cuda, dataset, transform, top_k,
-             im_size=300, thresh=0.05):
+             im_size=1024, thresh=0.05):
     num_images = len(dataset)
     # all detections are collected into:
     #    all_boxes[cls][image] = N x 5 array of detections in
@@ -424,7 +424,7 @@ def test_net(save_folder, net, cuda, dataset, transform, top_k,
     output_dir = get_output_dir('ssd300_120000', set_type)
     det_file = os.path.join(output_dir, 'detections.pkl')
 
-    time1 = time.perf_counter()
+    time1 = time.process_time()
     for i in range(num_images):
         im, gt, h, w = dataset.pull_item(i)
 
@@ -456,7 +456,7 @@ def test_net(save_folder, net, cuda, dataset, transform, top_k,
 
         print('im_detect: {:d}/{:d} {:.3f}s'.format(i + 1,
                                                     num_images, detect_time))
-    time2=time.perf_counter()
+    time2=time.process_time()
     print("detecting %d images needs %.4fs"%(num_images,(time2-time1)))
     with open(det_file, 'wb') as f:
         pickle.dump(all_boxes, f, pickle.HIGHEST_PROTOCOL)

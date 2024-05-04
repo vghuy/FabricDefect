@@ -326,7 +326,7 @@ cachedir: Directory for caching the annotations
     for imagename in imagenames:
         R = [obj for obj in recs[imagename] if obj['name'] == classname]
         bbox = np.array([x['bbox'] for x in R])
-        difficult = np.array([x['difficult'] for x in R]).astype(np.bool_)
+        difficult = np.array([x['difficult'] for x in R]).astype(bool)
         det = [False] * len(R)
         npos = npos + sum(~difficult)
         class_recs[imagename] = {'bbox': bbox,
@@ -387,8 +387,8 @@ cachedir: Directory for caching the annotations
                 fp[d] = 1.
 
         # compute precision recall
-        # print(fp)
-        # print(tp)
+        print(fp)
+        print(tp)
         fp = np.cumsum(fp)
         tp = np.cumsum(tp)
         # print(fp)

@@ -350,10 +350,11 @@ def train():
                     + '/RefineDet{}_voc0712_{}_.pth'.format(args.input_size,
             repr(iteration)))
 
-        if iteration%500==0:
+        if iteration%50==0:
+            arm_loss_l = arm_loss_l.cpu()
             pltx.append(iteration)
             plty.append(loss.item())
-            pltz.append(arm_loss_c.item()+arm_loss_l+arm_loss_l.item())
+            pltz.append(arm_loss_c.item()+arm_loss_l.detach().numpy()+arm_loss_l.item())
             pltm.append(odm_loss_c.item()+odm_loss_l.item())
         # if loss<best_loss:
         #     best_loss=loss

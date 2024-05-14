@@ -327,7 +327,7 @@ tcb_add = {
 }
 
 
-def build_refinedet_novel_cam(phase, size=320, num_classes=10):
+def build_refinedet_novel_cam(phase, size=512, num_classes=10):
     if phase != "test" and phase != "train":
         print("ERROR: Phase: " + phase + " not recognized")
         return

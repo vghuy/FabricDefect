@@ -1,40 +1,3 @@
-
-# Fabric defect detection based on improved RefineDet
-### Table of Contents
-- <a href='#introduction'>Introduction</a>
-- <a href='#data augmentation'>Data Preparation</a>
-- <a href='#installation'>Installation</a>
-- <a href='#training'>Train</a>
-- <a href='#evaluation'>Evaluate</a>
-- <a href='#test result'> Test results</a>
-- <a href='#future work'>Future work</a>
-
-
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-## Introduction
-The original RefineDet mainly based on [https://github.com/luuuyi/RefineDet.PyTorch](https://github.com/luuuyi/RefineDet.PyTorch)
-
-For the actual problems in the field of fabric defect detection, we have made the following improvements:
--  Various attention mechanism blocks
-   * [x] CAM (Optional)
-   * [x] SAM (Optional)
-   * [x] CBAM (Optional)
-   * [x] SE (Optional)
--  Mosaic data augmentation 
--  Bottom-up augmentation TCB
--  Cosine annealing scheduler
--  Various activation function
-   * [x] Mish (Optional)
-   * [x] Swish (Optional)
-- Various regression loss function
-   * [x] GIoU loss (Optional)
-   * [x] DIoU loss (Optional)
-   * [x] CIoU loss (Optional)
-- Label smoothing (Optional)
-
 ## Data Preparation
 
 ##### TILDA dataset 
@@ -67,7 +30,3 @@ download from [ https://hci.iwr.uni-heidelberg.de/content/weakly-supervised-lear
 ## Test result
 See file "test results" of my experiments for detail
 
-## Future work
-- Still to come:
-  * [ ] Weakly supervised object detection branch
-  * [ ] MixUp, CutOut and CutMix data augmentation method
